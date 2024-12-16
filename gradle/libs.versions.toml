@@ -94,4 +94,7 @@ youtube-video-player={module ="com.pierfrancescosoffritti.androidyoutubeplayer:c
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "1.9.0" }
+dagger = { id = "com.google.dagger.hilt.android", version = "2.50" }
+
 

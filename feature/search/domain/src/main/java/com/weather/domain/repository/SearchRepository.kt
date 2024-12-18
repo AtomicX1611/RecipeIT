@@ -5,8 +5,8 @@ import com.weather.domain.model.RecipeDetails
 
 interface SearchRepository {
 
-    suspend fun getRecipes(s : String) : List<DomainModel>
+    suspend fun getRecipes(s : String) : Result<List<DomainModel>>
 
-    suspend fun getRecipeDetail(id : String) : RecipeDetails
+    suspend fun getRecipeDetail(id : String) : Result<RecipeDetails>
 
 }

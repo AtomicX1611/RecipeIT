@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.dagger)
+    id("kotlin-kapt")
 }
 
 android {
@@ -51,6 +53,11 @@ android {
 
 dependencies {
 
+    implementation(project(":common"))
+    implementation(project(":feature:search:domain"))
+    implementation(project(":feature:search:ui"))
+    implementation(project(":feature:search:data"))
+    implementation(project(":media_player"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,4 +73,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.dagger.hilt)
+    kapt(libs.dagger.kapt)
 }

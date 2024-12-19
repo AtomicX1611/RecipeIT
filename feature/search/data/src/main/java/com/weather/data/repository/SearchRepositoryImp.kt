@@ -12,36 +12,42 @@ class SearchRepositoryImp(
 ) : SearchRepository {
 
     override suspend fun getRecipes(s : String): Result<List<DomainModel>> {
-       val response = searchServiceApi.getRecipes(s)
-       return if(response.isSuccessful) {
-           response.body()?.meals?.let {
-               Result.success(it.toDomain())
-           } ?: run {
-               Result.failure(Exception("Error occured"))
+       return try {
+           val response = searchServiceApi.getRecipes(s)
+           return if(response.isSuccessful) {
+               response.body()?.meals?.let {
+                   Result.success(it.toDomain())
+               } ?: run {
+                   Result.failure(Exception("Error occured"))
+               }
+           }else{
+               Result.failure(Exception("Couldn't generate Domain models"))
            }
-        }else{
-            Result.failure(Exception("Couldn't generate Domain models"))
-        }
+       }catch (e : Exception){
+           Result.failure(e)
+       }
     }
 
     override suspend fun getRecipeDetail(id: String): Result<RecipeDetails> {
-        val response = searchServiceApi.getRecipeDetails(id)
-        return if(response.isSuccessful){
-            response.body()?.meals?.let {
-                if(it.isNotEmpty()){
+        return try {
+            val response = searchServiceApi.getRecipeDetails(id)
+            return if(response.isSuccessful){
+                response.body()?.meals?.let {
+                    if(it.isNotEmpty()){
+                        Result.success(it.first().toDomain())
+                    }else{
+                        Result.failure(Exception("Error Occured while retreiving"))
+                    }
                     Result.success(it.first().toDomain())
-                }else{
-                    Result.failure(Exception("Error Occured while retreiving"))
+                } ?: run {
+                    Result.failure(Exception("Error occurred"))
                 }
-                Result.success(it.first().toDomain())
-            } ?: run {
-                Result.failure(Exception("Error occurred"))
+            }else{
+                Result.failure(Exception("Exception occurred"))
             }
-        }else{
-            Result.failure(Exception("Exception occurred"))
+        }catch (e : Exception){
+            Result.failure(e)
         }
-        TODO("Not yet implemented")
     }
-
 }
 

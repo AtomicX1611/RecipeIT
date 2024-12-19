@@ -23,4 +23,6 @@ private val searchRepository: SearchRepository
     }.catch {
             emit(NetworkResult.Error(message = it.message))
     }.flowOn(Dispatchers.IO)
+
 }
+

@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -47,10 +48,9 @@ fun RecipeListScreen(
                         ),
                         keyboardActions = KeyboardActions(
                               onSearch = {
-                                    Log.v("TAGGY","Viewmodel called")
                                     recipeListViewModel.onEvent(RecipeListUiState.Event.SearchRecipe(q = query.value))
                               }
-                        )
+                        ), modifier = Modifier.fillMaxWidth()
                   )
             }
       ) { paddingValues ->

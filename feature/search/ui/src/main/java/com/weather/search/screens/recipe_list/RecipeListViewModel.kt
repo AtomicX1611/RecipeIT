@@ -45,11 +45,17 @@ class RecipeListViewModel @Inject constructor(
                             }
                         }
                         is NetworkResult.Success -> {
-                            Log.v("TAGGG","${res.data}")
-                            RecipeListUiState.UiState(data = res.data)}
-                        is NetworkResult.Loading ->  {RecipeListUiState.UiState(isLoading = true)}
+                            _uiState.update {
+                                RecipeListUiState.UiState(data = res.data)
+                            }
+                            RecipeListUiState.UiState(data = res.data)
+                        }
+                        is NetworkResult.Loading ->  {
+                            _uiState.update {
+                                RecipeListUiState.UiState(isLoading = true)
+                            }
+                        }
                     }
-
                 }.launchIn(viewModelScope)
         }
 }

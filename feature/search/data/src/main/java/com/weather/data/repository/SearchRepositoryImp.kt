@@ -43,7 +43,7 @@ class SearchRepositoryImp(
                     if(it.isNotEmpty()){
                         Result.success(it.first().toDomain())
                     }else{
-                        Result.failure(Exception("Error Occurred while retreiving"))
+                        Result.failure(Exception("Error Occurred while retrieving"))
                     }
                     Result.success(it.first().toDomain())
                 } ?: run {
@@ -56,5 +56,6 @@ class SearchRepositoryImp(
             Result.failure(e)
         }
     }
+
 }
 

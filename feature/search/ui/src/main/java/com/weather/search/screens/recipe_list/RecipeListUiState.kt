@@ -12,10 +12,11 @@ object RecipeListUiState {
     )
 
     sealed interface Navigation{
-       data class ToRecipeDetail(val id : String) : Navigation
+       data class ToRecipeDetail(val id : String? = null) : Navigation
     }
 
     sealed interface Event{
-       data class SearchRecipe(val q : String) : Event
+        data class SearchRecipe(val q : String) : Event
+        data class GoToRecipe(val id : String? = null) : Event
     }
 }

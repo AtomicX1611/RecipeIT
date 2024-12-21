@@ -9,12 +9,15 @@ import com.weather.common.utils.NetworkResult
 import com.weather.common.utils.UiText
 import com.weather.domain.use_cases.GetAllRecipeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,9 +30,18 @@ class RecipeListViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RecipeListUiState.UiState())
     val uiState : StateFlow<RecipeListUiState.UiState>  get() = _uiState.asStateFlow()
 
+    private val _navigation = Channel<RecipeListUiState.Navigation>()
+    val navigation : Flow<RecipeListUiState.Navigation> = _navigation.receiveAsFlow()
+
+
     fun onEvent(event : RecipeListUiState.Event){
         when(event){
             is RecipeListUiState.Event.SearchRecipe -> onSearch(event.q)
+            is RecipeListUiState.Event.GoToRecipe -> {
+                  viewModelScope.launch {
+                      _navigation.send(RecipeListUiState.Navigation.ToRecipeDetail(event.id))
+                  }
+            }
         }
     }
 

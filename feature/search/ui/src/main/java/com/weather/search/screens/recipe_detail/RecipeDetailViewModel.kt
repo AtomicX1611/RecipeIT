@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.weather.common.utils.NetworkResult
 import com.weather.common.utils.UiText
 import com.weather.domain.use_cases.GetRecipeDetailUseCase
-import com.weather.search.screens.recipe_list.RecipeListUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

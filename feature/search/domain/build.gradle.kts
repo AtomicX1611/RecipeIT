@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.weather.domain"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 25

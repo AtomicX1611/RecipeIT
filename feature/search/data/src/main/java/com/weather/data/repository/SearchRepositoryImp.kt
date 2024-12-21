@@ -1,5 +1,6 @@
 package com.weather.data.repository
 
+import android.util.Log
 import com.weather.data.mappers.toDomain
 import com.weather.data.model.RecipeDTO
 import com.weather.data.remote.SearchServiceApi
@@ -12,18 +13,24 @@ class SearchRepositoryImp(
 ) : SearchRepository {
 
     override suspend fun getRecipes(s : String): Result<List<DomainModel>> {
+        Log.v("TAGGED","Repo called1")
        return try {
+           Log.v("TAGGED","Repo called")
            val response = searchServiceApi.getRecipes(s)
+           //This is where the error is
+
+           Log.v("REPLY","Response : ${response.body()}")
            return if(response.isSuccessful) {
                response.body()?.meals?.let {
                    Result.success(it.toDomain())
                } ?: run {
-                   Result.failure(Exception("Error occured"))
+                   Result.failure(Exception("Error occurred"))
                }
            }else{
                Result.failure(Exception("Couldn't generate Domain models"))
            }
        }catch (e : Exception){
+           Log.e("TAGGED", "Network request failed", e)
            Result.failure(e)
        }
     }
@@ -36,7 +43,7 @@ class SearchRepositoryImp(
                     if(it.isNotEmpty()){
                         Result.success(it.first().toDomain())
                     }else{
-                        Result.failure(Exception("Error Occured while retreiving"))
+                        Result.failure(Exception("Error Occurred while retreiving"))
                     }
                     Result.success(it.first().toDomain())
                 } ?: run {

@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.weather.data"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 25
@@ -49,4 +49,6 @@ dependencies {
     implementation(libs.retrofit.gson.convertor)
     implementation(libs.dagger.hilt)
     kapt(libs.dagger.kapt)
+    implementation ("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.11")
+
 }

@@ -15,18 +15,20 @@ import javax.inject.Inject
 class GetAllRecipeUseCase @Inject constructor(private val searchRepository: SearchRepository) {
 
     operator fun invoke(q : String) = flow<NetworkResult<List<DomainModel>>>{
-          Log.v("CALLY","Invoked the network request with ${q}")
+        Log.v("TAGy","Use-case called")
           emit(NetworkResult.Loading())
           val response = searchRepository.getRecipes(q)
-          Log.v("Resp","${response.getOrThrow()}")
+
           if(response.isSuccess){
+              Log.v("TagY","ues case got success")
               emit(NetworkResult.Success(data = response.getOrThrow()))
-              Log.v("TAGY", "${response.getOrThrow()}")
           }else{
+              Log.v("TagY","ues case got failure")
               emit(NetworkResult.Error(message = response.exceptionOrNull()?.localizedMessage))
-              Log.v("TAGY", "${response.getOrThrow()}")
           }
     }.catch {
+        Log.v("TagY","ues case got exception")
         emit(NetworkResult.Error(message = it.message.toString()))
     }.flowOn(Dispatchers.IO)
+
 }

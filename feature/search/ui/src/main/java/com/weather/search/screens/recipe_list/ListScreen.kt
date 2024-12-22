@@ -1,5 +1,8 @@
 package com.weather.search.screens.recipe_list
 
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -16,8 +20,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -60,12 +66,12 @@ fun RecipeListScreen(
                               Text(text = "Search")
                         },
                         onValueChange = { query.value = it },
-                        label = { Text("Search Recipes") },
                         keyboardOptions = KeyboardOptions.Default.copy(
                               imeAction = ImeAction.Search
                         ),
                         keyboardActions = KeyboardActions(
                               onSearch = {
+                                    Log.v("ERROR TAG", query.value)
                                     recipeListViewModel.onEvent(RecipeListUiState.Event.SearchRecipe(q = query.value))
                               }
                         ), modifier = Modifier.fillMaxWidth()
@@ -73,13 +79,23 @@ fun RecipeListScreen(
             }
       ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues).padding(top = 4.dp).fillMaxSize()) {
-                     if(uiState.value.data?.size!=null){
+                     if(!uiState.value.data.isNullOrEmpty()){
                            LazyColumn(modifier = Modifier.fillMaxSize()){
-                                 items(uiState.value.data!!){
-                                       RecipeCard(modifier = Modifier.padding(top = 8.dp), recipeDetails = it){ id ->
-                                             navigateToDetail(id)
+                                 if(uiState.value.data!=null){
+                                       items(uiState.value.data!!){
+                                             RecipeCard(modifier = Modifier.padding(top = 8.dp), recipeDetails = it){ id ->
+                                                   navigateToDetail(id)
+                                             }
                                        }
                                  }
+                           }
+                     }else{
+                           Box(modifier = Modifier.fillMaxSize()){
+                               Column(modifier = Modifier.fillMaxSize(),
+                                     verticalArrangement = Arrangement.Center,
+                                     horizontalAlignment = Alignment.CenterHorizontally) {
+                                        CircularProgressIndicator()
+                               }
                            }
                      }
             }

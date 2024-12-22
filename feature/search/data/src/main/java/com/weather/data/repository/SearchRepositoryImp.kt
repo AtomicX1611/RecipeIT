@@ -13,15 +13,15 @@ class SearchRepositoryImp(
 ) : SearchRepository {
 
     override suspend fun getRecipes(s : String): Result<List<DomainModel>> {
-        Log.v("TAGGED","Repo called1")
        return try {
-           Log.v("TAGGED","Repo called")
            val response = searchServiceApi.getRecipes(s)
-           //This is where the error is
+           if(response.body()!=null) {
+               Log.v("REPLY","Got data")
+           }
 
-           Log.v("REPLY","Response : ${response.body()}")
            return if(response.isSuccessful) {
                response.body()?.meals?.let {
+                   Log.v("REPLY","GOT reply")
                    Result.success(it.toDomain())
                } ?: run {
                    Result.failure(Exception("Error occurred"))
@@ -30,7 +30,6 @@ class SearchRepositoryImp(
                Result.failure(Exception("Couldn't generate Domain models"))
            }
        }catch (e : Exception){
-           Log.e("TAGGED", "Network request failed", e)
            Result.failure(e)
        }
     }

@@ -6,11 +6,8 @@ sealed class NavRoutes(val route : String) {
     data object RecipeDetail : NavRoutes("/detail/{id}"){
         fun sendID(id : String? = null) = "/detail/${id}"
     }
-
 }
 
 sealed class NavigationSubGraphRoute(val route: String){
-
     data object Search : NavigationSubGraphRoute("/search")
-
 }

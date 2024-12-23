@@ -50,7 +50,7 @@ class RecipeListViewModel @Inject constructor(
         private fun onSearch(q : String) = viewModelScope.launch {
             Log.v("TAGG","Calling invoke")
             getAllRecipeUseCase.invoke(q)
-                .onEach {res ->
+                .collect {res ->
                     when(res){
                         is NetworkResult.Error -> {
                             _uiState.update {
@@ -69,6 +69,6 @@ class RecipeListViewModel @Inject constructor(
                             }
                         }
                     }
-                }.launchIn(viewModelScope)
+                }
         }
 }

@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -26,7 +27,6 @@ class RecipeDetailViewModel @Inject constructor(
     fun onEvent(event : RecipeDetailUiState.Event){
         when(event){
             is RecipeDetailUiState.Event.FetchRecipeDetails -> {
-                Log.v("Calling display","Once")
                 displayDetail(event.id)
             }
         }
@@ -34,11 +34,13 @@ class RecipeDetailViewModel @Inject constructor(
 
     private fun displayDetail(id : String) = viewModelScope.launch {
         Log.v("MEAL display", id)
-        getRecipeDetailUseCase.invoke(id)
-            .onEach { res ->
+
+        val response = getRecipeDetailUseCase.invoke(id)
+
+        response
+            .collect{ res ->
                 when(res){
                     is NetworkResult.Error -> {
-                        Log.v("MEAL Success","id = $id and data : ${res.data}")
                         _uiState.update {
                             RecipeDetailUiState.UiState(
                                 error = UiText.RemoteString(res.message.toString())
@@ -51,7 +53,6 @@ class RecipeDetailViewModel @Inject constructor(
                        }
                     }
                     is NetworkResult.Success -> {
-                        Log.v("MEAL Success","id = $id and data : ${res.data}")
                       _uiState.update {
                           RecipeDetailUiState.UiState(data = res.data)
                       }

@@ -35,9 +35,11 @@ class SearchFeatureAPIImp : SearchFeatureAPI{
             composable(route = NavRoutes.RecipeDetail.route){
                 val mealId = it.arguments?.getString("id")
                 val viewModel = hiltViewModel<RecipeDetailViewModel>()
+                
                 LaunchedEffect(mealId) {
                     viewModel.onEvent(RecipeDetailUiState.Event.FetchRecipeDetails(id = mealId!!))
                 }
+
                 RecipeDetailScreen(recipeDetailViewModel = viewModel)
             }
 

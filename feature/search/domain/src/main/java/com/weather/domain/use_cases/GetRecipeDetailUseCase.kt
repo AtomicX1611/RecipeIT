@@ -1,5 +1,6 @@
 package com.weather.domain.use_cases
 
+import android.util.Log
 import com.weather.common.utils.NetworkResult
 import com.weather.domain.model.RecipeDetails
 import com.weather.domain.repository.SearchRepository
@@ -13,6 +14,7 @@ class GetRecipeDetailUseCase @Inject constructor(
 private val searchRepository: SearchRepository
 ){
     operator fun invoke(id : String) = flow<NetworkResult<RecipeDetails>>{
+             Log.v("Detail", id)
              emit(NetworkResult.Loading())
              val response = searchRepository.getRecipeDetail(id)
              if(response.isSuccess){

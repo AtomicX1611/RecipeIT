@@ -39,6 +39,7 @@ class RecipeListViewModel @Inject constructor(
             is RecipeListUiState.Event.SearchRecipe -> onSearch(event.q)
             is RecipeListUiState.Event.GoToRecipe -> {
                   viewModelScope.launch {
+                      Log.v("NAV TAG","${event.id}")
                       _navigation.send(RecipeListUiState.Navigation.ToRecipeDetail(event.id))
                   }
             }

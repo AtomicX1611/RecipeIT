@@ -49,10 +49,10 @@ fun RecipeListScreen(
 
       LaunchedEffect(key1 = recipeListViewModel.navigation) {
             recipeListViewModel.navigation.flowWithLifecycle(lifeCycleOwner.lifecycle)
-                  .collectLatest {
-                        when(it){
+                  .collectLatest {res ->
+                        when(res){
                               is RecipeListUiState.Navigation.ToRecipeDetail -> {
-                                    navHostController.navigate(NavRoutes.RecipeDetail.sendID(it.id))
+                                    navHostController.navigate(NavRoutes.RecipeDetail.sendID(res.id))
                               }
                         }
                   }
